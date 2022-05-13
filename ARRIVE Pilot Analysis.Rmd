@@ -1,0 +1,308 @@
+---
+title: "ARRIVE compliance pilot analysis"
+author: "Pedro Batista Tan"
+date: "`r strftime(Sys.Date(), '%B %d %Y')`"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+---
+# Loading Packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, warning=FALSE, message = FALSE, dpi = 300
+  # fig.width = 10, fig.height = 6, output: html_notebook
+)
+
+# strftime(Sys.Date(), '%B %d %Y')
+
+# install.packages("tidyverse")
+# install.packages("BiocManager") #(only if you do not have BiocManager)
+#BiocManager::install("org.Hs.eg.db", "biomaRt")
+library(tidyverse)
+library(readxl)
+library(car)
+library(patchwork)
+library(pwr2)
+library(ggbeeswarm)
+library(cowplot)
+library(ggpubr)
+
+# generate output dir path named data
+output.dir <- file.path("figures")
+
+# if source output dir does not exist, create it
+if (!dir.exists(output.dir)) {
+  dir.create(output.dir)
+} else{
+  print("Output folder already exists")
+}
+```
+
+# Loading data
+```{r}
+# Import data
+paper_metadata <- read.csv2("Revistas e impacto.csv", sep = ",")
+raw_results <- read_excel("Results.xlsx")
+
+# Remove excluded papers
+raw_results <- raw_results %>% filter(!doi %in% c("10.1021/acsnano.7b07643", "10.1038/s41598-018-31905-5"))
+
+# Fix DOI
+raw_results_fixdoi <- raw_results %>% filter(grepl("https://doi.org/", doi)) %>% mutate(doi = str_replace(doi, "https://doi.org/", ""))
+
+raw_results <- raw_results %>% filter(!grepl("https://doi.org/", doi)) %>% rbind(raw_results_fixdoi)
+  
+Question_cols <- colnames(raw_results)[!colnames(raw_results) %in% c("Carimbo de data/hora", "Nome", "doi", "GROUP")]
+
+# Convert results to long format
+results <- raw_results %>% select(-c("Carimbo de data/hora", "Nome")) %>% pivot_longer(cols = all_of(Question_cols), values_to = "Answer", names_to = "Question")
+
+# Simplify "yes" answers to yes
+results <- results %>%
+  mutate(
+    Answer = ifelse(Answer %in% c("Yes, for at least one experiment", "Yes, for at least one stage/experiment"), "Yes", Answer)
+    )
+```
+
+# Journal frequency
+```{r}
+## Balloon plot ###
+
+# parse paper metadata
+paper_metadata <- paper_metadata[, 1:3, drop = FALSE] %>% rbind(
+  paper_metadata[, 4:6, drop = FALSE] %>% rename("DOI" = "Controle.pareado", "Grupo" = "Ano", "Revista" = "Revista.1"))
+
+# Filter only papers that were included in the final sample
+paper_metadata <- paper_metadata %>% filter(DOI %in% raw_results$doi)
+
+# Count journal distribution per group
+journals <- table(paper_metadata$Revista, paper_metadata$Grupo) %>% as.data.frame() 
+
+journals <- journals %>% pivot_wider(values_from = Freq, names_from = Var2) %>% column_to_rownames("Var1")
+
+# Rearrange rows and columns
+journals <- journals %>% rename("nARRIVE 2018" = "2018", "nARRIVE 2020" = "2020") %>% arrange(-`ARRIVE 2.0`) %>% arrange(-`ARRIVE 1.0`) %>% relocate("ARRIVE 1.0", "ARRIVE 2.0", "nARRIVE 2018", "nARRIVE 2020")
+
+p <- ggballoonplot(journals, fill = "value", rotate.x.text = F, ggtheme = theme_classic())+
+  scale_fill_viridis_c(option = "K") + labs(fill = "Frequency", size = "Frequency")
+
+ggarrange(p) %>% ggexport(plotlist = p, filename=file.path(output.dir, "Journals_distribution.png"), res = 300, width = 2600, height = 1900)
+
+```
+
+# Analyzis scores per DOI
+```{r}
+# Frequency table of each answer per doi
+results_table <- table(results$doi, results$Answer) %>% as.data.frame()
+colnames(results_table) <- c("doi", "value", "Freq")
+
+results_table_wide <- results_table %>% pivot_wider(names_from = value, values_from = Freq)
+
+results_p <- results_table_wide %>% 
+  mutate(notNA_total = Yes + No) %>%  
+  mutate(score = Yes/notNA_total) %>% 
+  left_join(results %>% select(doi, GROUP) %>% unique())
+
+results_p <- results_p %>% left_join(results %>% select(doi, GROUP) %>% unique()) %>% mutate(
+  Time = ifelse(GROUP %in% c("Citing ARRIVE 1.0", "Not citing ARRIVE, 2018"), "2018", "2020"),
+  ARRIVE = ifelse(GROUP %in% c("Citing ARRIVE 1.0", "Citing ARRIVE 2.0"), "1", "0"))
+
+table(results_p$GROUP, results_p$Time)
+table(results_p$GROUP, results_p$ARRIVE)
+
+group_names <- results_p %>% select(GROUP) %>% unique()
+group_names <- group_names[order(group_names$GROUP), ]
+group_names$group <- c("ARRIVE 2018", "ARRIVE 2020", "nARRIVE 2018", "nARRIVE 2020")
+results_p <- results_p %>% left_join(group_names)
+
+```
+
+## ANOVA
+```{r}
+# Run ANOVA
+res.aov <- aov(score ~ ARRIVE + Time + ARRIVE:Time, data = results_p)
+anova_summary <- summary(res.aov)[[1]]%>% broom::tidy()
+
+plot(res.aov, 1)
+leveneTest(score ~ ARRIVE*Time, data = results_p)
+
+plot(res.aov, 2)
+aov_residuals <- residuals(object = res.aov)
+shapiro.test(x = aov_residuals )
+
+summary(res.aov)
+
+summary_stats <- group_by(results_p, ARRIVE, Time) %>%
+  summarise(
+    count = n(),
+    mean = mean(score, na.rm = TRUE),
+    sd = sd(score, na.rm = TRUE)
+  )
+
+ group_by(results_p, ARRIVE) %>%
+  summarise(
+    count = n(),
+    mean = mean(score, na.rm = TRUE),
+    sd = sd(score, na.rm = TRUE)
+  )
+ 
+ group_by(results_p, Time) %>%
+  summarise(
+    count = n(),
+    mean = mean(score, na.rm = TRUE),
+    sd = sd(score, na.rm = TRUE)
+  )
+summary_stats
+
+```
+## Plots
+```{r}
+# Plot distribution of scores per group
+# results_p %>% ggplot(aes(x = group, y = score, fill = ARRIVE)) + geom_boxplot() + ylim(0, 1) + geom_point() + labs(x = "", y = "Score") 
+
+# results_p %>% ggplot(aes(x = group, y = score, fill = ARRIVE, shape = Time)) + geom_boxplot() + ylim(0, 1) + geom_beeswarm(cex=2) + labs(x = "", y = "Score")
+
+Fig2A <- results_p %>% ggplot(aes(x = group, y = score, fill = ARRIVE, shape = Time)) + geom_boxplot(outlier.shape = NA) + ylim(0, 1) + geom_beeswarm(cex=2, size = 1.5) + labs(x = "", y = "Score") + guides(
+  shape = guide_legend(override.aes = list(alpha = 1, linetype = c(0,0))), 
+  fill = guide_legend(override.aes = list(linetype = c(0,0), shape = c(NA,NA)))) + theme(
+    legend.key = element_rect(fill = "white", colour = "white")
+  ) + annotate(geom="text", x=0.5, y=0.24, label= sprintf("ARRIVE: p = %s", round(anova_summary$p.value[1], 4)), color="black", hjust = 0, size = 3) + 
+  annotate(geom="text", x=0.5, y=0.16, label= sprintf("Time: p = %s", round(anova_summary$p.value[2], 2)), color="black", hjust = 0, size = 3) + 
+  annotate(geom="text", x=0.5, y=0.08, label= sprintf("ARRIVE~Time: p = %s", round(anova_summary$p.value[3], 2)), color="black", hjust = 0, size = 3)
+
+ggsave(plot = Fig2A, file=file.path(output.dir, "ARRIVE_anova.png"), width= 6, height= 4, dpi=300)
+
+Fig2B <- results_p %>% ggplot(aes(x = ARRIVE, y = score, fill = ARRIVE)) + geom_boxplot(outlier.shape = NA) + ylim(0, 1) + geom_beeswarm(cex=2, size = 1) + labs(x = "ARRIVE citation", y = "Score")  + guides(
+  shape = guide_legend(override.aes = list(alpha = 1, linetype = c(0,0))), 
+  fill = guide_legend(override.aes = list(linetype = c(0,0), shape = c(NA,NA)))) + theme(legend.position = "none")
+
+ggsave(plot = Fig2B, file=file.path(output.dir, "ARRIVE_cite.png"), width= 5, height= 4, dpi=300)
+
+
+Fig2C <- results_p %>% ggplot(aes(x = Time, y = score, shape = Time)) + geom_boxplot(outlier.shape = NA) + ylim(0, 1) + geom_beeswarm(cex=2, size = 1) + labs(x = "Time", y = "Score") + guides(
+  shape = guide_legend(override.aes = list(alpha = 1, linetype = c(0,0))), 
+  fill = guide_legend(override.aes = list(linetype = c(0,0), shape = c(NA,NA)))) + theme(legend.position = "none")
+
+ggsave(plot = Fig2C, file=file.path(output.dir, "ARRIVE_time.png"), width= 5, height= 4, dpi=300)
+
+Fig2 = plot_grid(Fig2A, "", Fig2B, Fig2C, ncol = 2, labels = c("A", "B", "C"))
+Fig2 = plot_grid(Fig2A, plot_grid(Fig2B, Fig2C, ncol = 2, labels = c("B", "C")), ncol = 1, labels = c("A", ""))
+
+ggsave(plot = Fig2, file=file.path(output.dir, "Fig2.png"), width= 6, height= 6, dpi=300)
+
+```
+
+# Analyzis per question
+```{r}
+# Read simplified questions
+simplified_questions <- read.csv2("simplified_questions.csv")
+
+# Frequency table of each answer per question
+results_qtable <- table(results$Question, results$GROUP, results$Answer) %>% as.data.frame()
+colnames(results_qtable) <- c("question", "GROUP", "value", "Freq")
+
+results_qtable_wide <- results_qtable %>% pivot_wider(names_from = value, values_from = Freq)
+
+qtotal <- results_qtable_wide %>% group_by(question) %>% dplyr::summarize(tNA = sum(`NA`), tyes = sum(Yes), tno = sum(No), notNA_total = tyes+tno) %>% ungroup() %>% left_join(simplified_questions)
+
+results_pq <- results_qtable_wide %>% 
+  mutate(notNA_total = Yes + No) %>%  
+  mutate(score = Yes/notNA_total) %>% left_join(simplified_questions) %>% left_join(group_names)
+
+results_pq <- results_pq %>% mutate(
+  Time = ifelse(GROUP %in% c("Citing ARRIVE 1.0", "Not citing ARRIVE, 2018"), "2018", "2020"),
+  ARRIVE = ifelse(GROUP %in% c("Citing ARRIVE 1.0", "Citing ARRIVE 2.0"), "1", "0"))
+
+table(results_pq$GROUP, results_pq$Time)
+table(results_pq$GROUP, results_pq$ARRIVE)
+```
+
+```{r}
+# Plot total of yes answers per question
+qtotal %>% ggplot(aes(x = reorder(simplified_question, tyes), y = tyes/notNA_total)) + geom_col() + coord_flip() + labs(y = "Compliance (%)") + guides(fill = F) + labs(x = "Simplified question") 
+
+ggsave(file=file.path(output.dir, "Questions_total.png"), width= 6, height= 4, dpi=300)
+
+# Plot distribution of scores per question
+results_pq %>% ggplot(aes(x = group, y = score, fill = ARRIVE)) + geom_boxplot() + ylim(0, 1) + geom_point()
+
+results_pq %>% ggplot(aes(x = Time, y = score, fill = Time)) + geom_boxplot() + ylim(0, 1) + geom_point()
+results_pq %>% ggplot(aes(x = ARRIVE, y = score, fill = ARRIVE)) + geom_boxplot() + ylim(0, 1) + geom_point()
+
+```
+
+
+```{r}
+# Plot  total of yes answers per group per question
+results_pq %>% ggplot(aes(x = simplified_question, y = Yes, fill = GROUP)) + geom_col(position = "dodge2") + coord_flip()
+
+# Splitting in half for better visualization
+squestions <- results_pq$simplified_question %>% unique()
+
+results_pq %>% filter(simplified_question %in% squestions[1:9]) %>% ggplot(aes(x = simplified_question, y = Yes, fill = group)) + geom_col(position = "dodge2") + coord_flip() + labs() 
+
+results_pq %>% filter(simplified_question %in% squestions[10:18])  %>% ggplot(aes(x = simplified_question, y = Yes, fill = group)) + geom_col(position = "dodge2") + coord_flip()
+
+results_pq %>% filter(simplified_question %in% squestions[1:9]) %>% ggplot(aes(x = simplified_question, y = Yes, fill = group)) + geom_col(position = "dodge2") + coord_flip() + labs(x = "Question abbreviation") + guides(fill = F) +
+results_pq %>% filter(simplified_question %in% squestions[10:18])  %>% ggplot(aes(x = simplified_question, y = Yes, fill = group)) + geom_col(position = "dodge2") + coord_flip() + labs(x = "")
+# ggsave("Question_group.png", dpi = 300, width = 12, height = 5)
+```
+
+
+```{r}
+# Plotting time and ARRIVE differences per question
+time_diff <- results_pq %>% group_by(simplified_question, Time) %>% summarize(Yes = sum(Yes)) %>% pivot_wider(names_from = Time, values_from = Yes) %>% mutate(time_diff = `2020` - `2018`) %>% ungroup()
+
+arrive_diff <- results_pq %>% group_by(simplified_question, ARRIVE) %>% summarize(Yes = sum(Yes)) %>% pivot_wider(names_from = ARRIVE, values_from = Yes) %>% mutate(arrive_diff = `1` - `0`) %>% ungroup() 
+
+Fig3A <- results_pq %>% group_by(simplified_question, ARRIVE) %>% summarize(Yes = sum(Yes)) %>%  left_join(arrive_diff)  %>% ggplot(aes(x = reorder(simplified_question, arrive_diff), y = Yes, fill = ARRIVE)) + geom_col(position = "dodge2") + coord_flip() + labs(x = "Question abbreviation", y = "Papers that reported for at least one experiment")
+
+ggsave(plot = Fig3A, file=file.path(output.dir, "Questions_citation.png"), width= 6, height= 4, dpi=300)
+
+Fig3B <- results_pq %>% group_by(simplified_question, Time) %>% dplyr::summarize(Yes = sum(Yes)) %>% left_join(time_diff) %>% ggplot(aes(x = reorder(simplified_question, time_diff), y = Yes, fill = Time)) + geom_col(position = "dodge2") + coord_flip() + labs(x = "Question abbreviation", y = "Papers that reported for at least one experiment")
+
+ggsave(plot = Fig3B, file=file.path(output.dir, "Questions_time.png"), width= 6, height= 4, dpi=300)
+
+
+Fig3 = plot_grid(Fig3A, Fig3B, ncol = 1, labels = c("A", "B"))
+
+ggsave(plot = Fig3, file=file.path(output.dir, "Fig3.png"), width= 6.5, height= 8, dpi=300)
+```
+
+## one sample t-tests on differences
+```{r}
+t.test(arrive_diff$arrive_diff, mu = 0)
+t.test(time_diff$time_diff, mu = 0)
+```
+
+
+
+# Power calculation
+```{r}
+# Setup an empty dataframe which will receive power calculation data
+Power_calculation <- setNames(data.frame(matrix(ncol = 4, nrow = 0)), c("n", "ARRIVE", "Time", "Power"))
+
+sigma = mean(summary_stats$sd)
+# power = res
+
+for (i in seq(from = 2, to = 256, by = 4)){
+  sample_size = i
+  pwr_res <- pwr.2way(a=2, b=2, alpha=0.05, size.A=sample_size, size.B=sample_size, delta.A=0.1, delta.B=0.04, sigma.A=sigma, sigma.B=sigma)
+  
+  Power_calculation <- Power_calculation %>% rbind(
+      setNames(data.frame(i, pwr_res$power.A, pwr_res$power.B, pwr_res$power), c("n","ARRIVE", "Time","Power"))
+  )
+}
+
+Power_calculation %>% pivot_longer(cols = c(ARRIVE, Time, Power), names_to = "Type", values_to = "Power") %>% filter(Type != "Power") %>% ggplot(aes(x = n, y = Power, col = Type)) + geom_point()
+
+Power_calculation %>% pivot_longer(cols = c(ARRIVE, Time, Power), names_to = "Type", values_to = "Power") %>% filter(Type != "Power") %>% ggplot(aes(x = n, y = Power, col = Type)) + geom_point() + ylim(0.7, 1) + xlim(0, 200)
+
+```
+
+# sessionInfo - Package Versions
+```{r}
+sessionInfo()
+```
+
