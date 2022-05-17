@@ -48,11 +48,9 @@ group: ARRIVE compliance
 event: No-Budget Science Hack Week 2021
 biohackathon_name: No-Budget Science Hack Week 2021
 biohackathon_url: https://www.reprodutibilidade.bio.br/hack-week-2021
-biohackathon_location: Brazil Reproducibility Network (virtual)
-
+biohackathon_location: Brazilian Reproducibility Network (virtual)
+corresponding author: pedro.tan2@gmail.com
 ---
-
-#### corresponding author: pedro.tan2@gmail.com
 
 # Abstract
 
