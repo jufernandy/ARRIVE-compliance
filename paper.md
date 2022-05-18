@@ -48,7 +48,7 @@ group: ARRIVE compliance
 event: No-Budget Science Hack Week 2021
 biohackathon_name: No-Budget Science Hack Week 2021
 biohackathon_url: https://www.reprodutibilidade.bio.br/hack-week-2021
-biohackathon_location: Brazilian Reproducibility Network (virtual)
+biohackathon_location: virtual
 corresponding author: pedro.tan2@gmail.com
 ---
 
@@ -104,26 +104,107 @@ Data collection was performed by members of the NBS Hack Week group and was bala
 
 Table 2. List of ARRIVE items, question abbreviations, usual locations where this information is found in papers and search keywords.
 
-ARRIVE Item | Question abbreviation | Full Question	| Usual locations and Keywords |
----------- | ---------- | ---------- | ---------- |
-1 Study Design | Exp. Groups | Are all experimental and control groups clearly identified?	| Graphs, methods, and results descriptions. *“control”, “sample*” |
-1 Study Design | Exp. Units	| Is the experimental unit (e.g. an animal, litter or cage of animals) clearly identified? | Graphs, methods, and results descriptions. *“unit”, “experimental”, “animal”, “cage”, “litter”, “mice”, “rat”.* |
-2 Sample Size | Sample size	| Is the exact number of experimental units in each group provided (e.g. in the format ‘n=’)? Visually displaying experimental points does not account for “N” reporting. Reporting a range also does not account for exact N description. | Graphs, methods, and results descriptions. *“n =”, “n=”, “sample size”* | 
-2 Sample Size | Sample size calc.	| Is the method by which the sample size was chosen mentioned? |  Statistics methods section. *“sample size”, “number of”, “animals”, “rats”, “power”, “calculation”, “determined”* |
-3 Inclusion & Exclusion Criteria | Inclusion/Exclusion crit.	| Are the criteria used for including and excluding animals, experimental units, or data points provided? | Graphs, methods, and results descriptions. *“criteria”, “inclusion”, “included”, “exclusion”, “excluded”, “removed”, “eliminated”, “outlier”* |
-3 Inclusion & Exclusion Criteria | Exclusions	| Are any exclusions of animals, experimental units, or data points reported, or is there a statement indicating that there were no exclusions?	| Graphs, methods, and results descriptions. *“exclusion”, “excluded”, “removed”, “eliminated”, “outlier”* |
-4 Randomisation | Group allocation	| Is the method by which experimental units were allocated to control and treatment groups described?| Method descriptions. *“groups”, “allocation”, “allocated”, “distributed”, “among”, “randomisation”, “randomized”, “randomly”* | 
-5 Blinding | Blinding	|Is it clear whether researchers were aware of, or blinded to, the group allocation at any stage of the experiment or data analysis? | Method descriptions. *“aware”, “experimenter”, “researcher”, “masked”, “blind”, “randomisation”, “randomized”, “randomly”* |
-6 Outcome Measures | Clear exp. measures	| For all experimental outcomes presented, are details provided of exactly what parameter was measured?	| Graph legends and result descriptions. Unspecified or vague descriptions such as “ratio” require further explanation of measured parameters. N/A |
-7 Statistical Methods | Detailed stat. tests	| Is the statistical approach used to analyse each outcome detailed?	| Figure legends and statistics methods subsection. *“test”, “statistical”, “significance”, "value"* | 
-7 Statistical Methods |  Stat. Assumptions	| Is there a description of any methods used to assess whether data met statistical assumptions? | Figure legends and “statistics” methods subsection. *“data”, “normality”, “assumption”, “normality”, “homoscedasticity”, “heterogeneity”, “sphericity”, “Levene”, “variance”* |
-8 Experimental Animals| Species	| Are all species and strains of animal used specified?	| Animal methods subsection. It is not necessary to provide the scientific name of the species. If applicable, the transgenic strain must also be reported. *“mice”, “mouse”, “rat”, “Mus musculus”, “Rattus norvegicus”, “strain”, “animal”* |
-8 Experimental Animals| Sex	| Is the sex of the animals specified? | Animal methods subsection. *“female”, “male”, “sex”* | 
-8 Experimental Animals | Age/Weight/Stage	| Is at least one of age, weight or developmental stage of the animals specified? | “Animals” methods subsection. Values can be stated as exact numbers or as a range. *“week”, “old”, “young”, “adult”, “age”, “weight”* |
-9 Experimental Procedures | Timing/Frequency	| Are both the timing and frequency with which procedures took place specified? | Graphs, methods, and results descriptions	 *“hours”, “weeks”, “post”, “period”, “after”, “procedure”, “submitted”* |
-9 Experimental Procedures | Acclimatisation	| Are details of acclimatisation periods to experimental locations provided? | Methods description *“acclimate”, “housing”, “transport”, “moved”* | 
-10 Results| Descriptive and variability Stat.	| Are descriptive statistics for each experimental group provided, with a measure of variability (e.g. mean and SD, or median and range)? | Graphs and results descriptions. Search for error bars in figures or SD/SEM descriptions in tables. N/A |
-10 Results | Effect size and CI	| Is the effect size and confidence interval provided? | Graphs, results descriptions and supplementary materials. Check if error bars or tables indicate CIs. *“values”, “detailed statistics”, “95%”, “CI”, “effect size”, “cohen”, “cliff”, “eta”, “n2”* |
+### Study Design
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+Exp. Groups | Are all experimental 	| Graphs, methods, and  results.|
+||and control groups |*“control”, “sample”*|
+||clearly identified?| |
+|Exp. Units	| Is the experimental unit | Graphs, methods, and results. |
+||clearly identified? | *“unit”, “experimental”, “animal”,*|
+||| *“cage”, “litter”, “mice”, “rat”.*|
+
+### Sample Size
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Sample size	| Is the exact number of |Graphs, methods, and results. | 
+|| experimental units in each  | Visually displaying points or |
+|| group provided (e.g. in |reporting a range does not account|
+||the format ‘n=’)?| for exact N description.|
+||| *“n =”, “n=”, “sample size”* |
+|Sample size calc. | Is the method by which  |  Statistics methods section.  |
+|| the sample size was |*“sample size”, “number of”, “animals”, *|
+||chosen mentioned?|*“rats”, “power”, “calculation”, “determined”*|
+
+### Inclusion & Exclusion Criteria
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Inclusion/Exclusion | Are the criteria used | Graphs, methods, and results. |
+|crit.|for including and excluding | *“criteria”, “inclusion”,*|
+|| animals, experimental units, or |*“included”,“exclusion”,“excluded”,*|
+||data points provided?|*“removed”, “eliminated”, “outlier”*|
+|Exclusions	| Are any exclusions of animals, | Graphs, methods, and results. |
+|| experimental units, or data 	| *“exclusion”, “excluded”, “removed”,*|
+||points reported, or is there| *“eliminated”, “outlier”*|
+|| a statement indicating that||
+|| there were no exclusions?||
+
+
+### Group Allocation, blinding, outcome measures
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Group allocation	| Is the method by which  | Method descriptions. | 
+|| experimental units were allocated  |*“groups”, “allocation”, “allocated”,*|
+||to control and treatment |*“distributed”, “randomisation”,*|
+||groups described?|*“randomized”, “randomly”, "among”*|
+|Blinding	|Is it clear whether researchers   | Method descriptions. |
+||were aware of, or blinded to, |*“aware”, “experimenter”, “researcher”,* |
+||the group allocation at |*“masked”, “blind”, “randomisation”,*|
+||any stage of the experiment |*“randomized”, “randomly”*|
+||or data analysis?||
+|Clear exp. measures	| For all experimental  | Graph legends and results.|
+||outcomes presented, are  | Unspecified descriptions such as “ratio”  |
+|| details provided of exactly   |require further explanation |
+||what parameter was measured?|of measured parameters. *N/A*|
+
+### Statistical Methods
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Detailed stat. tests	| Is the statistical approach	| Figure legends and | 
+|| used to analyse each | statistics methods subsection.|
+||outcome detailed?|*“test”, “statistical”, “significance”, "value"*|
+|Stat. Assumptions	| Is there a description  | Figure legends and |
+|| of any methods used to  | statistics subsection. |
+||assess whether data met | *“data”, “normality”, “assumption”, |
+||statistical assumptions?|*“normality”, “homoscedasticity”, “Levene”*|
+|||*“heterogeneity”, “sphericity”, “variance”*|
+
+### Experimental Animals
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Species	| Are all species and strains | Animals subsection. Not |
+||of animal used specified?|necessary to provide the scientific name.|
+|||*“mice”, “mouse”, “rat”, “Mus musculus”,*|
+||| *“Rattus norvegicus”, “strain”, “animal”*|
+|Sex	| Is the sex of | Animal methods subsection.  | 
+||the animals specified? |*“female”, “male”, “sex”*|
+|Age/Weight/Stage	| Is at least one of age, | Animals subsection.|
+||weight or developmental stage | Can be stated exactly or |
+|| of the animals specified?| as a range. *“week”, “old”, *|
+|||*“young”, “adult”, “age”, “weight”* |
+
+### Experimental Procedures
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Timing/Frequency	| Are both the timing and | Graphs, methods and results.|
+||frequency with which procedures |*“hours”, “weeks”, “post”, “period”,*  |
+||took place specified? |*“after”, “procedure”, “submitted”*|
+|Acclimatisation	| Are details of acclimatisation | Methods description.| 
+||periods to experimental  | *“acclimate”, “housing”,*|
+||locations provided?| *“transport”, “moved”*|
+
+### Results
+|Question abbreviation | Full Question | Usual locations and Keywords |
+|---------- | ---------- | ---------- |
+|Descriptive and 	| Are descriptive statistics for  | Graphs and results. |
+|variability Stat.|each experimental group provided,|Search for error bars|
+||with a measure of variability?|in figures or descriptions|
+||| in tables. *N/A*|
+|Effect size and CI | Is the effect size and  | Graphs, results and |
+||confidence interval provided?|supplementary materials. |
+|||*“values”, “detailed statistics”, "95%”,*|
+|||*“CI”,“effect size”, “cohen”,* |
+|||*“cliff”, “eta”, “n2”*|
 
 ## Data analysis
 The compliance score for each publication was calculated as the number of positive answers divided by the number of applicable questions (not N/A out of the total 18). We performed a 2-way analysis of variance (ANOVA) to measure the primary outcomes using the  ARRIVE citation status (0/1) and time period (2018/2020) as factors. Given our study design, the interaction term between citing ARRIVE guidelines and time can be interpreted as the effect between different ARRIVE versions. We also compared compliance for each of the 18 sub-items in the total sample or among the ARRIVE citation and time period groups. The differences in numbers of papers complying with each question were compared with one sample t-tests against the null hypothesis of 0. All statistical analysis presented in this paper are descriptive and exploratory.
@@ -132,29 +213,24 @@ The compliance score for each publication was calculated as the number of positi
 
 The distribution of journals included in our sample and the frequency within each group is represented in figure 1. Notably, there was a small overlap among journals included in each group, even when considering the small sample size (n=16). There was also an enrichment for Scientific Reports and the British Journal of Pharmacology in the ARRIVE 2.0 group, as these journals started requiring mandatory statements of ARRIVE compliance during the submission process. 
 
-![Journals](./journals.png)
-
-Figure 1. Distribution of journals in each sample group. The frequency of papers analyzed from each journal is represented by both the size and color of dots (n = 16 per group).
+![Distribution of journals in each sample group. The frequency of papers analyzed from each journal is represented by both the size and color of dots (n = 16 per group).
+](./journals.png)
 
 Compliance scores for papers included in this study are presented in figure 2. Interestingly, we did not observe large differences in ARRIVE compliance between groups, as reflected in 2-way ANOVA results. Overall, papers that cited ARRIVE had slightly higher compliance scores (Figure 2B) (F = 7.122, p = 0.0098), but we did not observe differences between the time periods (Figure 2C) (F = 0.994, p = 0.32). We also did not detect an interaction effect between citing ARRIVE guidelines and time (F = 0.030, p =  0.86), which in our study design corresponds to the difference between ARRIVE 1.0 and 2.0 versions.
 
-![Compliance](./compliance_scores.png)
+![Distribution of compliance scores A) for each evaluated group, B) between papers either citing or not citing any version of ARRIVE and C) between papers from 2018 or 2020, regardless of citing or not ARRIVE. p-values are presented from a 2-way ANOVA comparing group scores using time, ARRIVE citation and their interaction as factors. Sample size is n=16 articles per group, and n=32 when comparing only ARRIVE and Time factors.
+](./compliance_scores.png)
 
-Figure 2: Distribution of compliance scores A) for each evaluated group, B) between papers either citing or not citing any version of ARRIVE and C) between papers from 2018 or 2020, regardless of citing or not ARRIVE. p-values are presented from a 2-way ANOVA comparing group scores using time, ARRIVE citation and their interaction as factors. Sample size is n=16 articles per group, and n=32 when comparing only ARRIVE and Time factors.
 
 To investigate which sub-items were most frequently answered, we also analyzed compliance scores at the level of individual questions (Figure 3). Papers often include descriptions that are important to understand experimental procedures such as information on biological models, experimental measures and timing and frequency of procedures. Sub-items that had the lower compliance scores were related to study design, such as sample size calculation, statistical assumptions, inclusion and exclusion criteria and allocation of animals to experimental groups. The items with the lowest scores were explicit reporting of effect sizes and confidence intervals and details on acclimatization, as these are not commonly reported in biomedical papers.
 
-![Compliance_sub](./percentage_sub_items.png)
+![Percentage of compliance for the 18 individual ARRIVE E10 sub-items across all 64 papers included in the sample.](./percentage_sub_items.png)
 
-Figure 3. Percentage of compliance for the 18 individual ARRIVE E10 sub-items across all 64 papers included in the sample.
 
 We also investigated if there were changes in specific E10 sub-item reporting over time or with ARRIVE citations (Figure 4). We calculated the difference between the number of papers that complied with each sub-item between groups citing any version of ARRIVE guidelines (1 x 0) and between time periods (2020 x 2018), and performed one sample t-tests against a mean null hypothesis of 0. The mean increase in number of papers complying with sub-items was 3.22, 95% CI [1.72, 4.72], p = 0.0003 for groups citing ARRIVE (Figure 4A). Sub-items with the largest difference in number of papers were details on inclusion and exclusion criteria, acclimatization, blinding and sample exclusions for ARRIVE groups. When comparing 2020 and 2018, the mean increase in number of papers complying with sub-items was 1.55, 95% CI [1.72, 4.72], p = 0.0003 (Figure 4B). The largest differences were found in items describing statistical assumptions, sample exclusions, inclusion and exclusion criteria and group allocation. These results reveal a modest increase in the number of papers with compliance between groups, at the level of individual sub-items.
 
-![sub_items](./number_sub_items.png)
-
-Figure 4. Number of papers that complied with each sub-item for groups A) not citing (0) versus citing (1) any version of ARRIVE and B) from 2018 or 2020 regardless of citing or not ARRIVE (n = 32). E10 Sub-items are ordered by the difference in number of papers between groups.
-
-
+![subNumber of papers that complied with each sub-item for groups A) not citing (0) versus citing (1) any version of ARRIVE and B) from 2018 or 2020 regardless of citing or not ARRIVE (n = 32). E10 Sub-items are ordered by the difference in number of papers between groups.
+items](./number_sub_items.png)
 
 # Discussion
 
