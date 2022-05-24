@@ -54,7 +54,7 @@ corresponding author: pedro.tan2@gmail.com
 
 # Abstract
 
-The ARRIVE (Animal Research: Reporting of In Vivo Experiments) guidelines are reporting guidelines designed to improve transparency and facilitate critical assessment of experiments involving animal research. Although it represents essential reporting information for animal experiments, compliance with ARRIVE items is not commonly demanded by journals and is often lacking in animal studies. In this small pilot project, we evaluated compliance with ARRIVE 2.0 essential 10 items in 64 papers from 2018 and 2020, either citing or not the ARRIVE manuscripts. Papers that cited the ARRIVE guidelines had slightly higher reporting scores, but we did not detect an effect of the time period nor an interaction effect between ARRIVE versions 1.0 and 2.0. This work was conducted during the No-Budget Science Hackweek 2021 event, an extended hackathon to discuss and develop projects in metascience. In future work, this pilot can be expanded to better estimate the effects of the ARRIVE guidelines on reporting practices.
+The ARRIVE (Animal Research: Reporting of In Vivo Experiments) guidelines are reporting guidelines designed to improve transparency and facilitate critical assessment of experiments involving animal research. Although it represents essential reporting information for animal experiments, compliance with ARRIVE items is not commonly demanded by journals and is often lacking in animal studies. In this small pilot project, we evaluated compliance with ARRIVE 2.0 essential 10 items in 64 papers from 2018 and 2020, either citing or not the ARRIVE manuscripts. Papers that cited the ARRIVE guidelines had slightly higher reporting scores, but we did not detect an effect of the time period nor an interaction effect between ARRIVE versions 1.0 and 2.0. This work was conducted during the No-Budget Science Hack Week 2021 event, an extended hackathon to discuss and develop projects in metascience. In future work, this pilot can be expanded to better estimate the effects of the ARRIVE guidelines on reporting practices.
 
 # Background
 
@@ -82,8 +82,7 @@ iv. Citing both versions of the ARRIVE guidelines.
 
 We then searched for corresponding controls in Pubmed that did not cite ARRIVE guidelines. These were matched based on the year of publication and subject of study, determined by the best match of article keywords. After completing sample collection, we evaluated the representation of journals and period of publication among samples. As our sample did not include any papers from 2021, we hereby refer to the ARRIVE 2.0 time period as ARRIVE 2020. This study design included 4 groups with 2x2 factors of time periods and ARRIVE citation status (table 1).
 
-
-
+Table 1. Groups of papers compared in this study. This design contains 2x2 factors, the publication time period (2018 / 2020) and ARRIVE citation status (0/1). We only included studies from 2020 published from July 2020, after ARRIVE 2.0 was published.
 
 Publication date | Description | Group |
 ---------- | ---------- | ---------- |
@@ -91,8 +90,6 @@ Publication date | Description | Group |
 2018 | not citing ARRIVE 1.0 | nARRIVE 2018 |
 From July 2020 | citing ARRIVE 2.0 | ARRIVE 2020 |
 From July 2020 | not citing ARRIVE 2.0 | nARRIVE 2020 |
-
-Table 1. Groups of papers compared in this study. This design contains 2x2 factors, the publication time period (2018 / 2020) and ARRIVE citation status (0/1). We only included studies from 2020 published from July 2020, after ARRIVE 2.0 was published.
 
 ## Data collection
 
@@ -227,10 +224,9 @@ To investigate which sub-items were most frequently answered, we also analyzed c
 ![Percentage of compliance for the 18 individual ARRIVE E10 sub-items across all 64 papers included in the sample.](./percentage_sub_items.png)
 
 
-We also investigated if there were changes in specific E10 sub-item reporting over time or with ARRIVE citations (Figure 4). We calculated the difference between the number of papers that complied with each sub-item between groups citing any version of ARRIVE guidelines (1 x 0) and between time periods (2020 x 2018), and performed one sample t-tests against a mean null hypothesis of 0. The mean increase in number of papers complying with sub-items was 3.22, 95% CI [1.72, 4.72], p = 0.0003 for groups citing ARRIVE (Figure 4A). Sub-items with the largest difference in number of papers were details on inclusion and exclusion criteria, acclimatization, blinding and sample exclusions for ARRIVE groups. When comparing 2020 and 2018, the mean increase in number of papers complying with sub-items was 1.55, 95% CI [1.72, 4.72], p = 0.0003 (Figure 4B). The largest differences were found in items describing statistical assumptions, sample exclusions, inclusion and exclusion criteria and group allocation. These results reveal a modest increase in the number of papers with compliance between groups, at the level of individual sub-items.
+We also investigated if there were changes in specific E10 sub-item reporting over time or with ARRIVE citations (Figure 4). We calculated the difference between the number of papers that complied with each sub-item between groups citing any version of ARRIVE guidelines (1 x 0) and between time periods (2020 x 2018), and performed one sample t-tests against a mean null hypothesis of 0. The mean increase in number of papers complying with sub-items was 3.22, 95% CI [1.72, 4.72], p = 0.0003 for groups citing ARRIVE (Figure 4A). Sub-items with the largest difference in number of papers were details on inclusion and exclusion criteria, acclimatization, blinding and sample exclusions for ARRIVE groups. When comparing 2020 and 2018, the mean increase in number of papers complying with sub-items was 1.55, 95% CI [0.51, 2.59], p = 0.006 (Figure 4B). The largest differences were found in items describing statistical assumptions, sample exclusions, inclusion and exclusion criteria and group allocation. These results reveal a modest increase in the number of papers with compliance between groups, at the level of individual sub-items.
 
-![subNumber of papers that complied with each sub-item for groups A) not citing (0) versus citing (1) any version of ARRIVE and B) from 2018 or 2020 regardless of citing or not ARRIVE (n = 32). E10 Sub-items are ordered by the difference in number of papers between groups.
-items](./number_sub_items.png)
+![Number of papers that complied with each sub-item for groups A) not citing (0) versus citing (1) any version of ARRIVE and B) from 2018 or 2020 regardless of citing or not ARRIVE (n = 32). E10 Sub-items are ordered by the difference in number of papers between groups.](./number_sub_items.png)
 
 # Discussion
 
@@ -246,7 +242,7 @@ Importantly, though we did not detect an effect of the time period between 2018 
 
 Previous studies have suggested that endorsement of reporting guidelines by journals is a factor that increases adherence from authors [@jin2018does], but simply requiring statements of ARRIVE compliance without checking the quality of descriptions does not seem to be enough  [@hair2019randomised]. Even though many journals and funders have endorsed the use of ARRIVE guidelines, generally peer reviewers and editors have no designated role on their enforcement, limiting their impact [@baker2014two, @hair2019randomised, @mcgrath2015implementing]. 
 
-Additionally, insufficient adherence to reporting guidelines in biomedical sciences probably reflects a lack of planning during experimental research. We expect that authors that go through careful considerations when designing their studies are much more likely to report their choices and procedures, such that low compliance is likely a symptom of flexible and exploratory research practices. Strictly enforcing that authors report ARRIVE sub-items in manuscripts might actually improve research practices in the long term, by drawing attention to important aspects of study design that are often overlooked in basic biological research.
+Additionally, insufficient adherence to reporting guidelines in biomedical sciences probably reflects a lack of planning during experimental research. We expect that authors that go through careful considerations when designing their studies are much more likely to report their choices and procedures, such that low compliance is likely a symptom of flexible and exploratory research practices. Strictly enforcing that authors report ARRIVE sub-items in manuscripts might actually improve scientific practices in the long term, by drawing attention to important aspects of study design that are often overlooked in basic biological research.
 
 Publications in peer-reviewed scientific journals are the main source of information used by the scientific community to generate novel hypotheses and compare existing findings, advancing the frontiers of knowledge. To this end, it is critical that essential information for the interpretation of results and procedures are properly described. As shown in various reports, however, this is still considerably lacking in experimental animal studies. Reporting guidelines can guide authors to accomplish this task, but we believe it is necessary to enforce compliance as part of the editorial process, instead of simply endorsing and recommending their use. Though increased awareness of ARRIVE guidelines and improvements in reporting quality have been observed over the years, studies in biomedical sciences still require a substantial increase in adherence with these recommendations to obtain a more transparent and reproducible animal research.
  
@@ -256,17 +252,10 @@ This pilot study indicated an increase in ARRIVE E10 compliance scores between p
 
 # GitHub repositories and data availability
 
-All deliverable material resulting from the Hack Week, raw data and scripts for data analysis can be found at OSF https://osf.io/nu57w/. Figures are available at https://github.com/jufernandy/ARRIVE-compliance.
-
-# Paper data sources
-
-* Paper.md and paper.bib location: [[Github](https://github.com/jufernandy/ARRIVE-compliance)]
+All deliverable material resulting from the Hack Week, raw data and scripts for data analysis can be found at OSF https://osf.io/nu57w/. Figures, paper.md and paper.bib files used to generate this manuscript are available at https://github.com/jufernandy/ARRIVE-compliance.
 
 # Acknowledgements
 
 We thank professor Dr. Olavo Amaral and the No-Budget Science Hack Week 2021 event organization (https://www.reprodutibilidade.bio.br/hack-week-2021). We thank Tiago Lubiana for his workshop on Markdown that helped us write this preprint and submit it to BioHackrXiv. We also acknowledge Dr Nathalie Percie du Sert and Dr Matthew Brooke from the National Centre for the Replacement, Refinement and Reduction of Animals in Research (NC3Rs) for their kind assistance and suggestions and for answering questions about the ARRIVE questionnaire. We thank Instituto Serrapilheira for sponsoring this event.
-
-# Footnote
-The authors have declared that no competing interests exist.
 
 # References
